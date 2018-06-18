@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "draw.h"
 #include <cmath>
+#include <vector>
 
 #define MAX_LOADSTRING 100
 #define TMR_1 1
@@ -26,10 +27,16 @@ RECT drawArea2 = { 300, 0, 800, 89 };
 
 double alfa = 0.3;
 double beta = -0.1;
+double alfa_prev;
+double beta_prev;
 double l1 = 175;
 double l2 = 125;
 int W = 50;
 int H = 400;
+double speed = 0.01;
+int m = 20;
+int size = 40;
+int height = 0;
 
 class block
 {
@@ -44,6 +51,9 @@ private:
 	Point K;
 	int mass;
 };
+
+std::vector <block> blocks;
+block new_b;
 
 void MyOnPaint(HDC hdc)
 {
@@ -67,6 +77,15 @@ void MyOnPaint(HDC hdc)
 	graphics.FillEllipse(&Brush, a.X - 7, a.Y - 7, 15, 15);
 	graphics.FillEllipse(&Brush, b.X - 7, b.Y - 7, 15, 15);
 	graphics.FillEllipse(&Brush, c.X - 7, c.Y - 7, 15, 15);
+}
+
+void create_block(int x, int y, HWND hWnd)
+{
+	Point p(x, y);
+	blocks.push_back(new_b);
+	blocks[blocks.size() - 1].set_m(m);
+	blocks[blocks.size() - 1].set_p(p);
+
 }
 
 void paint(HDC &hdc, HWND hWnd, PAINTSTRUCT &ps) {
@@ -224,6 +243,76 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		wmId    = LOWORD(wParam);
 		wmEvent = HIWORD(wParam);
 		// Parse the menu selections:
+
+	case WM_KEYDOWN:
+	{
+		switch (wParam)
+		{
+		case VK_UP:
+			alfa_prev = alfa;
+			beta_prev = beta;
+			alfa += speed;
+			beta += speed;
+			break;
+		case VK_DOWN:
+			alfa_prev = alfa;
+			beta_prev = beta;
+			alfa -= speed;
+			beta -= speed;
+			break;
+		case VK_LEFT:
+			alfa_prev = alfa;
+			beta_prev = beta;
+			beta += speed;
+			break;
+		case VK_RIGHT:
+			alfa_prev = alfa;
+			beta_prev = beta;
+			beta -= speed;
+			break;
+		case VK_NUMPAD1:
+			create_block(75, 308, hWnd);
+			paint(hdc, hWnd, ps);
+			break;
+		case VK_NUMPAD2:
+			create_block(125, 308, hWnd);
+			paint(hdc, hWnd, ps);
+			break;
+		case VK_NUMPAD3:
+			create_block(175, 308, hWnd);
+			paint(hdc, hWnd, ps);
+			break;
+		case VK_NUMPAD4:
+			create_block(225, 308, hWnd);
+			paint(hdc, hWnd, ps);
+			break;
+		case VK_ADD:
+			if (m < 99)
+			{
+				m++;
+			}
+			break;
+		case VK_SUBTRACT:
+			if (m >1)
+			{
+				m--;
+			}
+			break;
+		case VK_PRIOR:
+			if (speed < 0.99)
+			{
+				speed += 0.01;
+			}
+			break;
+		case VK_NEXT:
+			if (speed > 0.01)
+			{
+				speed -= 0.01;
+			}
+			break;
+		}
+	}
+	break;
 		switch (wmId)
 		{
 		case IDM_ABOUT:
