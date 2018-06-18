@@ -99,25 +99,25 @@ void paint(HDC &hdc, HWND hWnd, PAINTSTRUCT &ps) {
 
 int OnCreate(HWND window)
 {
-   SetTimer(window, TMR_1, 25, 0);
-   return 0;
+	SetTimer(window, TMR_1, 25, 0);
+	return 0;
 }
 
 
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+	HINSTANCE hPrevInstance,
+	LPTSTR    lpCmdLine,
+	int       nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
-	
- 	// TODO: Place code here.
+
+	// TODO: Place code here.
 	MSG msg;
 	HACCEL hAccelTable;
 
-	value= 10;
+	value = 10;
 
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
@@ -129,7 +129,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	MyRegisterClass(hInstance);
 
 	// Perform application initialization:
-	if (!InitInstance (hInstance, nCmdShow))
+	if (!InitInstance(hInstance, nCmdShow))
 	{
 		return FALSE;
 	}
@@ -148,7 +148,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	GdiplusShutdown(gdiplusToken);
 
-	return (int) msg.wParam;
+	return (int)msg.wParam;
 }
 
 
@@ -172,17 +172,17 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 	wcex.cbSize = sizeof(WNDCLASSEX);
 
-	wcex.style			= CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc	= WndProc;
-	wcex.cbClsExtra		= 0;
-	wcex.cbWndExtra		= 0;
-	wcex.hInstance		= hInstance;
-	wcex.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_DRAW));
-	wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW+1);
-	wcex.lpszMenuName	= MAKEINTRESOURCE(IDC_DRAW);
-	wcex.lpszClassName	= szWindowClass;
-	wcex.hIconSm		= LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+	wcex.style = CS_HREDRAW | CS_VREDRAW;
+	wcex.lpfnWndProc = WndProc;
+	wcex.cbClsExtra = 0;
+	wcex.cbWndExtra = 0;
+	wcex.hInstance = hInstance;
+	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_DRAW));
+	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wcex.lpszMenuName = MAKEINTRESOURCE(IDC_DRAW);
+	wcex.lpszClassName = szWindowClass;
+	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
 	return RegisterClassEx(&wcex);
 }
@@ -199,24 +199,24 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   HWND hWnd;
+	HWND hWnd;
 
-   hInst = hInstance; // Store instance handle in our global variable
+	hInst = hInstance; // Store instance handle in our global variable
 
-   hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
-   
-   OnCreate(hWnd);
+	hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+	OnCreate(hWnd);
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+	if (!hWnd)
+	{
+		return FALSE;
+	}
 
-   return TRUE;
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
+
+	return TRUE;
 }
 
 //
@@ -240,7 +240,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_COMMAND:
-		wmId    = LOWORD(wParam);
+		wmId = LOWORD(wParam);
 		wmEvent = HIWORD(wParam);
 		// Parse the menu selections:
 
@@ -313,18 +313,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	}
 	break;
-		switch (wmId)
-		{
-		case IDM_ABOUT:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-			break;
-		case IDM_EXIT:
-			DestroyWindow(hWnd);
-			break;
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
-		}
+	switch (wmId)
+	{
+	case IDM_ABOUT:
+		DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 		break;
+	case IDM_EXIT:
+		DestroyWindow(hWnd);
+		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+	break;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		// TODO: Add any drawing code here...
@@ -338,12 +338,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_TIMER:
 		switch (wParam)
 		{
-			case TMR_1:
-				//force window to repaint
-				InvalidateRect(hWnd, NULL, TRUE);
-				hdc = BeginPaint(hWnd, &ps);
-				MyOnPaint(hdc);
-				EndPaint(hWnd, &ps);
+		case TMR_1:
+			//force window to repaint
+			InvalidateRect(hWnd, NULL, TRUE);
+			hdc = BeginPaint(hWnd, &ps);
+			MyOnPaint(hdc);
+			EndPaint(hWnd, &ps);
 			break;
 		}
 
