@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "draw.h"
+#include <cmath>
 
 #define MAX_LOADSTRING 100
 #define TMR_1 1
@@ -20,17 +21,48 @@ BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
+RECT drawArea1 = { 0, 90, 1200, 800 };
+RECT drawArea2 = { 300, 0, 800, 89 };
+
+double alfa = 0.3;
+double beta = -0.1;
+double l1 = 175;
+double l2 = 125;
+int W = 50;
+int H = 400;
 
 void MyOnPaint(HDC hdc)
 {
-	value++;
 	Graphics graphics(hdc);
-	Pen pen(Color(255,0,0,255));
-	//graphics.DrawLine(&pen,0,0,200,100);
+	Pen GreenPen(Color(255, 0, 255, 0), 5);
+	Pen BlackPen(Color(255, 0, 0, 0), 5);
 
-	graphics.DrawRectangle(&pen,100+value,100,10, 20);
+	SolidBrush Brush(Color(255, 255, 0, 0));
+
+	Point a(W, H);
+	Point b(a.X + cos(alfa)*l1, a.Y - sin(alfa)*l1);
+	Point c(b.X + cos(beta)*l2, b.Y - sin(beta)*l2);
+
+	graphics.DrawLine(&BlackPen, 0, H, 1200, H);
+
+	//draw_blocks(hdc, &BlackPen);
+
+	graphics.DrawLine(&GreenPen, a.X, a.Y, b.X, b.Y);
+	graphics.DrawLine(&GreenPen, b.X, b.Y, c.X, c.Y);
+
+	graphics.FillEllipse(&Brush, a.X - 7, a.Y - 7, 15, 15);
+	graphics.FillEllipse(&Brush, b.X - 7, b.Y - 7, 15, 15);
+	graphics.FillEllipse(&Brush, c.X - 7, c.Y - 7, 15, 15);
 }
 
+void paint(HDC &hdc, HWND hWnd, PAINTSTRUCT &ps) {
+	InvalidateRect(hWnd, &drawArea1, TRUE);
+	hdc = BeginPaint(hWnd, &ps);
+
+	MyOnPaint(hdc);
+
+	EndPaint(hWnd, &ps);
+}
 
 int OnCreate(HWND window)
 {
