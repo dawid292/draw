@@ -31,6 +31,20 @@ double l2 = 125;
 int W = 50;
 int H = 400;
 
+class block
+{
+public:
+	block() {};
+	~block() {};
+	void set_p(Point p) { K = p; }
+	Point take_p() { return K; }
+	void set_m(int m) { mass = m; }
+	int take_m() { return mass; }
+private:
+	Point K;
+	int mass;
+};
+
 void MyOnPaint(HDC hdc)
 {
 	Graphics graphics(hdc);
